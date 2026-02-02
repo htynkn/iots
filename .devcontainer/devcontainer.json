@@ -1,0 +1,20 @@
+{
+    "name": "ESP-IDF-Qwen-CLI",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USER_UID": "${localEnv:USER_UID}",
+            "USER_GID": "${localEnv:USER_GID}",
+            "USERNAME": "${localEnv:USERNAME}"
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "runArgs": [
+        "--privileged",
+        "-v", "/dev:/dev"
+    ],
+    "remoteUser": "${localEnv:USER}"
+}
