@@ -9,6 +9,7 @@
  * - BTHome v2 protocol compliant advertising
  * - Low power design with periodic measurements every 3 minutes
  * - Uses ESP-IDF official components only
+ * - Optimized for ESP8684 with 26MHz crystal and 2M Flash
  */
 
 #include <stdio.h>
@@ -41,7 +42,6 @@
 
 #include "esp_sleep.h"
 #include "soc/rtc_cntl_reg.h"
-#include "soc/sens_reg.h"
 
 // Configuration
 #define TAG "BTHomeTempSensor"
@@ -68,7 +68,6 @@
 
 // Global variables
 static bool ble_ready = false;
-static uint16_t bthome_adv_handle = 0;
 static onewire_bus_handle_t bus = NULL;
 static ds18b20_device_handle_t ds18b20_dev = NULL;
 
@@ -120,7 +119,16 @@ static esp_err_t init_ble(void)
     // Initialize BLE
     ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT));
 
+#if CONFIG_IDF_TARGET_ESP8684
+    // ESP8684 specific Bluetooth configuration
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
+    // Adjust buffer sizes for ESP8684 if needed
+    bt_cfg.bluetooth.mode = ESP_BT_MODE_BLE;
+    bt_cfg.ble_max_conn = 1;  // Reduce max connections to save memory
+#else
+    esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
+#endif
+
     ret = esp_bt_controller_init(&bt_cfg);
     if (ret) {
         ESP_LOGE(TAG, "%s initialize controller failed: %s", __func__, esp_err_to_name(ret));
@@ -164,11 +172,11 @@ static esp_err_t init_onewire_sensor(void)
             .en_pull_up = true,
         },
     };
-    
+
     onewire_bus_rmt_config_t rmt_config = {
         .max_rx_bytes = 10,
     };
-    
+
     ESP_ERROR_CHECK(onewire_new_bus_rmt(&bus_config, &rmt_config, &bus));
     ESP_LOGI(TAG, "OneWire bus initialized on GPIO%d", SENSOR_GPIO);
 
@@ -210,7 +218,7 @@ static uint16_t read_battery_voltage(void)
     adc_oneshot_unit_handle_t adc1_handle;
     adc_oneshot_unit_init_cfg_t init_config1 = {
         .unit_id = ADC_UNIT_1,
-        .clk_src = ADC_RTC_CLK_SRC_DEFAULT,
+        .clk_src = ADC_DIGI_CLK_SRC_DEFAULT,
     };
     ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config1, &adc1_handle));
 
@@ -363,6 +371,7 @@ void temperature_measurement_task(void *pvParameters)
     }
 
     // Wait for conversion to complete (max 750ms for 12-bit resolution)
+    // Adjusted for ESP8684 with 26MHz crystal if needed
     vTaskDelay(pdMS_TO_TICKS(750));
 
     // Read temperature

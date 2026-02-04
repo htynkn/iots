@@ -28,6 +28,6 @@ direct_dependencies:
 - espressif/ds18b20
 - espressif/onewire_bus
 - idf
-manifest_hash: e3bc2567e5c63e6643cfe9c85fb319a58bb74e5db2a106460772322f310cd800
+manifest_hash: 602f1eba452363109b845a0d9c3f8db96125c6677bc9410b679dfd6a0a1d4740
 target: esp32
 version: 2.0.0

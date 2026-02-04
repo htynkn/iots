@@ -4,9 +4,10 @@ dependencies:
   espressif/ds18b20: "^0.2"
 
 description: BTHome Bluetooth Temperature Sensor using ESP-IDF
-  
+
 targets:
   - esp32
+  - esp32c2
   - esp32c3
   - esp32s3
 
