@@ -1,0 +1,132 @@
+# Project root .gitignore
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.sln
+*.vcxproj
+*.user
+*.userosscache
+*.suo
+*.cproject
+*.project
+.settings/
+
+# Editor backup files
+*.tmp
+*.bak
+*.swp
+*~
+*#
+.\#*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs (for any projects)
+/dist/
+/build/
+/out/
+/target/
+/bin/
+/obj/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+
+# Secrets
+.env
+*.key
+*.pem
+*.crt
+*.cert
+*.secret
+secrets.*
+
+# Documentation
+/doc/_build/
+/docs/_build/
+
+# Local configuration
+.local/
+*.local
+
+# macOS
+.CFUserTextEncoding
+.apdisk
+.Spotlight-V100
+.fseventsd
+.Metadata_never_index
+.Metadata_never_index_unless_rootfs
+.nfs*
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.apdisk
+.Snapshots
+
+# Linux
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# OpenSpec temporary files
+.openspec/
+.openspec.tmp
+.openspec.cache
