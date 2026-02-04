@@ -1,72 +1,53 @@
-# BTHome Bluetooth Temperature Sensor
+| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-C5 | ESP32-C6 | ESP32-C61 | ESP32-H2 | ESP32-P4 | ESP32-S2 | ESP32-S3 | Linux |
+| ----------------- | ----- | -------- | -------- | -------- | -------- | --------- | -------- | -------- | -------- | -------- | ----- |
 
-This project implements a Bluetooth LE temperature sensor using ESP-IDF that reports temperature data via the BTHome protocol.
+# Hello World Example
 
-## Features
+Starts a FreeRTOS task to print "Hello World".
 
-- DS18B20 temperature sensor connected to GPIO4
-- BTHome v2 protocol compliant advertising
-- Low power design with periodic measurements every 3 minutes
-- Uses ESP-IDF official components only (no third-party libraries)
-- Reports temperature and battery voltage
+(See the README.md file in the upper level 'examples' directory for more information about examples.)
 
-## Note about ESP8266 vs ESP32
+## How to use example
 
-While the original request mentioned ESP8266, please note that ESP8266 does not support Bluetooth LE.
-This project uses ESP32 which has native Bluetooth LE capabilities. The OneWire interface works similarly
-on both chipsets, but Bluetooth functionality requires ESP32, ESP32-C3, ESP32-S3 or similar.
+Follow detailed instructions provided specifically for this example.
 
-## Hardware Requirements
+Select the instructions depending on Espressif chip installed on your development board:
 
-- ESP32 development board
-- DS18B20 temperature sensor
-- 4.7kΩ pull-up resistor for the OneWire bus
-- Connection: DS18B20 data pin to GPIO4 of ESP32
+- [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
+- [ESP32-S2 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/get-started/index.html)
 
-## Software Requirements
 
-- ESP-IDF v5.0 or higher
-- ESP32 toolchain
+## Example folder contents
 
-## Pin Connections
+The project **hello_world** contains one source file in C language [hello_world_main.c](main/hello_world_main.c). The file is located in folder [main](main).
 
-| DS18B20 Pin | ESP32 Pin |
-|-------------|-----------|
-| VDD         | 3.3V      |
-| GND         | GND       |
-| Data        | GPIO4     |
+ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt` files that provide set of directives and instructions describing the project's source files and targets (executable, library, or both).
 
-Connect a 4.7kΩ pull-up resistor between the Data pin and VDD pin of the DS18B20.
+Below is short explanation of remaining files in the project folder.
 
-## Building and Flashing
-
-```bash
-cd esp_bluetooth_temp_sensor
-idf.py build
-idf.py flash
+```
+├── CMakeLists.txt
+├── pytest_hello_world.py      Python script used for automated testing
+├── main
+│   ├── CMakeLists.txt
+│   └── hello_world_main.c
+└── README.md                  This is the file you are currently reading
 ```
 
-## BTHome Protocol Details
+For more information on structure and contents of ESP-IDF projects, please refer to Section [Build System](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html) of the ESP-IDF Programming Guide.
 
-The sensor broadcasts temperature data using the BTHome v2 protocol:
+## Troubleshooting
 
-- Service UUID: 0xFCD2
-- Device Info: 0x40 (Version 2, no encryption, periodic device)
-- Temperature Type ID: 0x02
-- Temperature Factor: 0.01 (value multiplied by 100 and stored as signed 16-bit integer in little-endian format)
-- Battery Voltage Type ID: 0x12 (optional)
+* Program upload failure
 
-Example: A temperature of 25.06°C is transmitted as:
-- Type ID: 0x02
-- Value: 0xC409 (2506 in decimal, which is 25.06 * 100)
+    * Hardware connection is not correct: run `idf.py -p PORT monitor`, and reboot your board to see if there are any output logs.
+    * The baud rate for downloading is too high: lower your baud rate in the `menuconfig` menu, and try again.
 
-## Power Consumption Notes
+## Technical support and feedback
 
-The device is designed for low power consumption:
-- Measurements taken every 3 minutes
-- BLE advertising only during data transmission
-- ESP32 deep sleep could be added for even lower power consumption
+Please use the following feedback channels:
 
-## Integration
+* For technical queries, go to the [esp32.com](https://esp32.com/) forum
+* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-idf/issues)
 
-This sensor is compatible with home automation systems that support the BTHome protocol, such as Home Assistant.
+We will get back to you as soon as possible.
